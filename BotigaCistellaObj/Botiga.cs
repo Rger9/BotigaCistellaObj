@@ -86,9 +86,9 @@ namespace BotigaCistellaObj
 
         // METODES
         /// <summary>
-        /// Retorna l'index del primer espai de productes buit.
+        /// Busca l'índex del primer espai lliure que trobi a la botiga.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Un número enter que representa l'índex de l'espai lliure. Si no hi ha cap espai retorna -1.</returns>
         public int EspaiLliure()
         {
             int index = -1;
@@ -100,8 +100,65 @@ namespace BotigaCistellaObj
             return index;
         }
 
+        public Botiga this[int i]
+        {
+            get { return productes[i];  }
+        }
+
+
+        /// <summary>
+        /// Afegeix el producte desitjat al primer espai lliure que trobi a la botiga.
+        /// </summary>
+        /// <param name="producte">Producte que volem afegir a la botiga.</param>
+        /// <returns>True si hi ha un espai lliure i pot afegir el producte, False en cas contrari.</returns>
+        public bool AfegirProducte(Producte producte)
+        {
+            if (EspaiLliure() != -1)
+            {
+                productes[EspaiLliure()] = producte;
+                return true;
+            }
+            else return false;
+        }
+        /// <summary>
+        /// Afegeix un conjunt de productes a la botiga
+        /// </summary>
+        /// <param name="productes">Taula de productes que afegirem a la botiga</param>
+        /// <returns>True si s'ha pogut afegir tot el conjunt de productes,False en cas contrari.</returns>
+        public bool AfegirProducte(Producte[] productes)
+        {
+            int i = 0;
+            for (int j = 0;  j <= this.productes.Length || i < productes.Length; j++)
+            {
+                if (EspaiLliure() != -1)
+                {
+                    this.productes[EspaiLliure()] = productes[i];
+                    i++;
+                }
+            }
+            return (i == productes.Length);
+        }
+        /// <summary>
+        /// Amplia la Botiga certa quantitat d'espais.
+        /// </summary>
+        /// <param name="ampliar">La quantitat d'espais que s'afegiran a la botiga.</param>
+        public void AmpliarBotiga(int ampliar)
+        {
+            if (ampliar > 0)
+            {
+                Producte[] productes = new Producte[this.productes.Length + ampliar];
+                for (int i = 0;  i < this.productes.Length; i++)
+                {
+                    productes[i] = this.productes[i];
+                }
+                this.productes = productes;
+            }
+        }
+
+        //public bool ModificarPreus(string producte, double preu) 
+        //{
+            
+        //}
         
-
-
     }
 }
