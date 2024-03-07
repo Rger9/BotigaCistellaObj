@@ -12,7 +12,6 @@ namespace BotigaCistellaObj
         private Botiga botiga;
         private DateTime data;
         private Producte[] productes;
-        private int[] quantitat;
         private int nElements;
         private double diners;
         
@@ -22,23 +21,16 @@ namespace BotigaCistellaObj
             this.botiga = null;
             this.data = DateTime.Now;
             this.productes = new Producte[10];
-            this.quantitat = new int[10];
             this.nElements = 0;
             this.diners = 0;
         }
-        Cistella(Botiga botiga, DateTime data, Producte[] productes, int[] quantitat, double diners)
+        Cistella(Botiga botiga, DateTime data, Producte[] productes, double diners)
         {
-            if (productes.Length == quantitat.Length)
-            {
-                this.botiga = botiga;
-                this.data = data;
-                this.productes = new Producte[productes.Length];
-                this.quantitat = new int[quantitat.Length];
-                this.nElements = productes.Length;
-                this.diners = diners;
-            }
-            else throw new ArgumentException("ERROR LA LENGTH DE LA TAULA DE PRODUCTES I QUANTITAT ES DIFERENT");
-            
+            this.botiga = botiga;
+            this.data = data;
+            this.productes = new Producte[productes.Length];
+            this.nElements = productes.Length;
+            this.diners = diners;
         }
 
         //PROPIETATS
@@ -56,11 +48,6 @@ namespace BotigaCistellaObj
         {
             get { return this.productes; }
             set { this.productes = value; }
-        }
-        public int[] Quantitat
-        {
-            get { return this.quantitat; }
-            set { this.quantitat = value; }
         }
         public int NElements
         {
