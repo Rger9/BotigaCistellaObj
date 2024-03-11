@@ -105,7 +105,7 @@ namespace BotigaCistellaObj
             }
         }
         
-        //METODES PUBLICS
+        //METODES
         /// <summary>
         /// Metode que retorna un double amb el preu amb l'iva inclos.
         /// </summary>
