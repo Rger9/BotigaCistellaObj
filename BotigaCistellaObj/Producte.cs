@@ -112,7 +112,7 @@ namespace BotigaCistellaObj
         /// <returns>Double que representa el preu del producte, amb l'iva inclos.</returns>
         public double Preu()
         {
-            return preu_sense_iva * iva;
+            return Math.Round(preu_sense_iva * iva, 2);
         }
 
         /// <summary>
