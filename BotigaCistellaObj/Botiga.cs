@@ -86,9 +86,9 @@ namespace BotigaCistellaObj
 
         // METODES
         /// <summary>
-        /// Retorna l'index del primer espai de productes buit.
+        /// Busca l'índex del primer espai lliure que trobi a la botiga.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Un número enter que representa l'índex de l'espai lliure. Si no hi ha cap espai retorna -1.</returns>
         public int EspaiLliure()
         {
             int index = -1;
@@ -99,9 +99,111 @@ namespace BotigaCistellaObj
             }
             return index;
         }
+        /// <summary>
+        /// Indexador que retorna l'índex d'un producte el qual coincideix amb el nom paràmetre.
+        /// </summary>
+        /// <param name="nom">Nom del producte a buscar.</param>
+        /// <returns>Retorna l'índex del producte cercat. Si no es troba, retorna -1.</returns>
+        public Producte this[string nom]
+        {
+            get
+            {
+                int i, index = -1;
+                for (i = 0; i < productes.Length && index != -1; i++)
+                {
+                    if (productes[i].Nom == nom)
+                        index = i;
+                }
+                if (index == -1) return null;
+                else return productes[index];
+            }
+            
+        }
 
-        
 
-
+        /// <summary>
+        /// Afegeix el producte desitjat al primer espai lliure que trobi a la botiga.
+        /// </summary>
+        /// <param name="producte">Producte que volem afegir a la botiga.</param>
+        /// <returns>True si hi ha un espai lliure i pot afegir el producte, False en cas contrari.</returns>
+        public bool AfegirProducte(Producte producte)
+        {
+            if (EspaiLliure() != -1)
+            {
+                productes[EspaiLliure()] = producte;
+                return true;
+            }
+            else return false;
+        }
+        /// <summary>
+        /// Afegeix un conjunt de productes a la botiga
+        /// </summary>
+        /// <param name="productes">Taula de productes que afegirem a la botiga</param>
+        /// <returns>True si s'ha pogut afegir tot el conjunt de productes,False en cas contrari.</returns>
+        public bool AfegirProducte(Producte[] productes)
+        {
+            int i = 0;
+            for (int j = 0;  j <= this.productes.Length || i < productes.Length; j++)
+            {
+                if (EspaiLliure() != -1)
+                {
+                    this.productes[EspaiLliure()] = productes[i];
+                    i++;
+                }
+            }
+            return (i == productes.Length);
+        }
+        /// <summary>
+        /// Amplia la Botiga certa quantitat d'espais.
+        /// </summary>
+        /// <param name="ampliar">La quantitat d'espais que s'afegiran a la botiga.</param>
+        public void AmpliarBotiga(int ampliar)
+        {
+            if (ampliar > 0)
+            {
+                Producte[] productes = new Producte[this.productes.Length + ampliar];
+                for (int i = 0;  i < this.productes.Length; i++)
+                {
+                    productes[i] = this.productes[i];
+                }
+                this.productes = productes;
+            }
+        }
+        /// <summary>
+        /// Busca un producte i en modifica el preu.
+        /// </summary>
+        /// <param name="producte">Producte a buscar.</param>
+        /// <param name="cost">Nou cost del producte.</param>
+        /// <returns>True si ha trobat el producte, el preu és vàlid i l'ha pogut modificar </returns>
+        public bool ModificarPreu(string producte, double cost)
+        {
+            if (!BuscarProducte(producte))
+            {
+                return false;
+            }
+            else
+            {
+                this[producte].Preu_sense_iva = cost;
+                return (cost > 0);
+            }
+        }
+        /// <summary>
+        /// Busca un producte
+        /// </summary>
+        /// <param name="producte">Producte a buscar</param>
+        /// <returns>True si ha trobat el producte</returns>
+        public bool BuscarProducte(Producte producte)
+        {
+            return (this[producte.Nom] != null);
+        }
+        /// <summary>
+        /// Busca un producte
+        /// </summary>
+        /// <param name="producte">Nom del producte a buscar</param>
+        /// <returns>True si ha trobat el producte</returns>
+        public bool BuscarProducte(string producte)
+        {
+            return (this[producte] != null);
+        }
     }
 }
