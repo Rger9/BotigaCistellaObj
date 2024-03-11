@@ -99,10 +99,25 @@ namespace BotigaCistellaObj
             }
             return index;
         }
-
-        public Botiga this[int i]
+        /// <summary>
+        /// Indexador que retorna l'índex d'un producte el qual coincideix amb el nom paràmetre.
+        /// </summary>
+        /// <param name="nom">Nom del producte a buscar.</param>
+        /// <returns>Retorna l'índex del producte cercat. Si no es troba, retorna -1.</returns>
+        public Producte this[string nom]
         {
-            get { return productes[i];  }
+            get
+            {
+                int i, index = -1;
+                for (i = 0; i < productes.Length && index != -1; i++)
+                {
+                    if (productes[i].Nom == nom)
+                        index = i;
+                }
+                if (index == -1) return null;
+                else return productes[index];
+            }
+            
         }
 
 
@@ -154,11 +169,41 @@ namespace BotigaCistellaObj
                 this.productes = productes;
             }
         }
-
-        //public bool ModificarPreus(string producte, double preu) 
-        //{
-            
-        //}
-        
+        /// <summary>
+        /// Busca un producte i en modifica el preu.
+        /// </summary>
+        /// <param name="producte">Producte a buscar.</param>
+        /// <param name="cost">Nou cost del producte.</param>
+        /// <returns>True si ha trobat el producte, el preu és vàlid i l'ha pogut modificar </returns>
+        public bool ModificarPreu(string producte, double cost)
+        {
+            if (!BuscarProducte(producte))
+            {
+                return false;
+            }
+            else
+            {
+                this[producte].Preu_sense_iva = cost;
+                return (cost > 0);
+            }
+        }
+        /// <summary>
+        /// Busca un producte
+        /// </summary>
+        /// <param name="producte">Producte a buscar</param>
+        /// <returns>True si ha trobat el producte</returns>
+        public bool BuscarProducte(Producte producte)
+        {
+            return (this[producte.Nom] != null);
+        }
+        /// <summary>
+        /// Busca un producte
+        /// </summary>
+        /// <param name="producte">Nom del producte a buscar</param>
+        /// <returns>True si ha trobat el producte</returns>
+        public bool BuscarProducte(string producte)
+        {
+            return (this[producte] != null);
+        }
     }
 }
