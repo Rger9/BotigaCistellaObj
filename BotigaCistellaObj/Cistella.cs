@@ -29,10 +29,22 @@ namespace BotigaCistellaObj
             this.botiga = botiga;
             this.data = data;
             this.productes = new Producte[productes.Length];
+            for(int i = 0; i < productes.Length && diners > 0.0; i++)
+            {
+                if (productes[i] == null)
+                    diners -= botiga[productes[i].Nom];
+            }
             this.nElements = productes.Length;
             this.diners = diners;
         }
+        Cistella(Botiga botiga, DateTime data, Producte[] productes, int[] quantitat, double diners) : this (botiga, data, productes, diners)
+        {
 
+            for(int i = 0; i < this.nElements; i++)
+            {
+
+            }
+        }
         //PROPIETATS
         public Botiga Botiga
         {
