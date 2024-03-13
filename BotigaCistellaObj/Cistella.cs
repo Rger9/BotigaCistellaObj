@@ -16,7 +16,7 @@ namespace BotigaCistellaObj
         private double diners;
         
         //CONTRUCTORS
-        Cistella()
+        public Cistella()
         {
             this.botiga = null;
             this.data = DateTime.Now;
@@ -24,7 +24,7 @@ namespace BotigaCistellaObj
             this.nElements = 0;
             this.diners = 0;
         }
-        Cistella(Botiga botiga, DateTime data, Producte[] productes, double diners)
+        public Cistella(Botiga botiga, DateTime data, Producte[] productes, double diners)
         {
             this.botiga = botiga;
             this.data = data;

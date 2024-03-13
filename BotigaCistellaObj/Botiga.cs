@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -93,10 +94,12 @@ namespace BotigaCistellaObj
         public int EspaiLliure()
         {
             int index = -1;
-            for (int i = 0; i < productes.Length || index != -1; index++)
+            for (int i = 0; i < productes.Length && index == -1; i++)
             {
-                if (productes[index] == null)
+                if (productes[i] == null)
+                {
                     index = i;
+                }
             }
             return index;
         }
@@ -139,20 +142,20 @@ namespace BotigaCistellaObj
         /// <summary>
         /// Afegeix un conjunt de productes a la botiga
         /// </summary>
-        /// <param name="productes">Taula de productes que afegirem a la botiga</param>
+        /// <param name="items">Taula de productes que afegirem a la botiga</param>
         /// <returns>True si s'ha pogut afegir tot el conjunt de productes,False en cas contrari.</returns>
-        public bool AfegirProducte(Producte[] productes)
+        public bool AfegirProducte(Producte[] items)
         {
             int i = 0;
-            for (int j = 0;  j <= this.productes.Length || i < productes.Length; j++)
+            for (int j = 0;  j <= productes.Length && i < items.Length; j++)
             {
                 if (EspaiLliure() != -1)
                 {
-                    this.productes[EspaiLliure()] = productes[i];
+                    productes[EspaiLliure()] = items[i];
                     i++;
                 }
             }
-            return (i == productes.Length);
+            return (i == items.Length);
         }
         /// <summary>
         /// Amplia la Botiga certa quantitat d'espais.
@@ -306,9 +309,11 @@ namespace BotigaCistellaObj
             Console.WriteLine($"- {NomBotiga.ToUpper()} -");
             for (int i = 0; i < productes.Length; i++)
             {
-                
+                if (productes[i] != null)
                 Console.WriteLine(
-                    $"{productes[i].Nom.PadRight(15, '-')} {(productes[i].Preu().ToString() + " Euros").PadRight(10, '-')} Quantitat: {productes[i].Quantitat}");
+                    $"{(productes[i].Nom + " ").PadRight(25, '-')} {(productes[i].Preu().ToString() + " Euros ").PadRight(10, '-')} Quantitat: {productes[i].Quantitat}");
+                else
+                    Console.WriteLine("".PadRight(30, '-'));
             }
         }
 
