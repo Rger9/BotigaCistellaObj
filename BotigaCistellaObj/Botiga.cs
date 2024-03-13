@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BotigaCistellaObj
 {
@@ -92,10 +94,12 @@ namespace BotigaCistellaObj
         public int EspaiLliure()
         {
             int index = -1;
-            for (int i = 0; i < productes.Length || index != -1; index++)
+            for (int i = 0; i < productes.Length && index == -1; i++)
             {
-                if (productes[index] == null)
+                if (productes[i] == null)
+                {
                     index = i;
+                }
             }
             return index;
         }
@@ -138,20 +142,20 @@ namespace BotigaCistellaObj
         /// <summary>
         /// Afegeix un conjunt de productes a la botiga
         /// </summary>
-        /// <param name="productes">Taula de productes que afegirem a la botiga</param>
+        /// <param name="items">Taula de productes que afegirem a la botiga</param>
         /// <returns>True si s'ha pogut afegir tot el conjunt de productes,False en cas contrari.</returns>
-        public bool AfegirProducte(Producte[] productes)
+        public bool AfegirProducte(Producte[] items)
         {
             int i = 0;
-            for (int j = 0;  j <= this.productes.Length || i < productes.Length; j++)
+            for (int j = 0;  j <= productes.Length && i < items.Length; j++)
             {
                 if (EspaiLliure() != -1)
                 {
-                    this.productes[EspaiLliure()] = productes[i];
+                    productes[EspaiLliure()] = items[i];
                     i++;
                 }
             }
-            return (i == productes.Length);
+            return (i == items.Length);
         }
         /// <summary>
         /// Amplia la Botiga certa quantitat d'espais.
@@ -199,6 +203,7 @@ namespace BotigaCistellaObj
                 return false;
             }
             return (this[producte.Nom] != null);
+            return (producte.Nom != null);
         }
         /// <summary>
         /// Busca un producte
@@ -213,5 +218,116 @@ namespace BotigaCistellaObj
             }
             return (this[producte] != null);
         }
+        /// <summary>
+        /// Ordena els Productes alfabèticament mitjançant el mètode QuickSort.
+        /// </summary>
+        /// <param name="productes">Array de productes.</param>
+        /// <param name="leftIndex">Primera posició de l'array de productes (més a l'esquerra, el 0).</param>
+        /// <param name="rightIndex">Última posició de l'array de productes (més a la dreta, la llargada de l'array menys 1).</param>
+        /// <returns>Array de productes</returns>
+        public Producte[] OrdenarProducte(Producte[] productes, int leftIndex, int rightIndex)
+        {
+            int i = leftIndex;
+            int j = rightIndex;
+            Producte pivot = productes[leftIndex];
+            while (i <= j)
+            {
+                while (productes[i].Nom.CompareTo(pivot.Nom) == -1)
+                {
+                    i++;
+                }
+
+                while (productes[j].Nom.CompareTo(pivot.Nom) == 1)
+                {
+                    j--;
+                }
+                if (i <= j)
+                {
+                    (productes[i], productes[j]) = (productes[j], productes[i]);
+                    i++;
+                    j--;
+                }
+            }
+            if (leftIndex < j)
+                OrdenarProducte(productes, leftIndex, j);
+            if (i < rightIndex)
+                OrdenarProducte(productes, i, rightIndex);
+            return productes;
+        }
+        /// <summary>
+        /// Ordena els Productes de menys a més spreu mitjançant el mètode QuickSort
+        /// </summary>
+        /// <param name="productes">Array de productes.</param>
+        /// <param name="leftIndex">Primera posició de l'array de productes (més a l'esquerra, el 0).</param>
+        /// <param name="rightIndex">Última posició de l'array de productes (més a la dreta, la llargada de l'array menys 1).</param>
+        /// <returns>Array de Productes</returns>
+        public Producte[] OrdenarPreus(Producte[] productes, int leftIndex, int rightIndex)
+        {
+            int i = leftIndex;
+            int j = rightIndex;
+            double pivot = productes[leftIndex].Preu();
+            while (i <= j)
+            {
+                while (productes[i].Preu() < pivot)
+                {
+                    i++;
+                }
+
+                while (productes[j].Preu() > pivot)
+                {
+                    j--;
+                }
+                if (i <= j)
+                {
+                    (productes[i], productes[j]) = (productes[j], productes[i]);
+                    i++;
+                    j--;
+                }
+            }
+            if (leftIndex < j)
+                OrdenarProducte(productes, leftIndex, j);
+            if (i < rightIndex)
+                OrdenarProducte(productes, i, rightIndex);
+            return productes;
+        }
+        /// <summary>
+        /// Esborra un producte de la Botiga
+        /// </summary>
+        /// <param name="producte">Producte a borrar</param>
+        /// <returns>True si s'ha borrat correctament</returns>
+        public bool EsborrarProducte(Producte producte)
+        {
+            if (BuscarProducte(producte) == true)
+            {
+                Console.WriteLine("S'ha trobat");
+                for (int i = 0; i < productes.Length ; i++)
+                {
+                    Console.WriteLine("blurp");
+                    if (productes[i].Nom != producte.Nom)
+                    {
+                        Console.WriteLine("wow");
+                        productes[i] = null;
+                    }
+                }
+                return true;
+            }
+            else return false;
+        }
+        /// <summary>
+        /// Mostra per pantalla la botiga i els productes d'aquesta amb els seus respectius noms, preus i quantitats.
+        /// </summary>
+        public void Mostrar()
+        {
+            Console.WriteLine($"- {NomBotiga.ToUpper()} -");
+            for (int i = 0; i < productes.Length; i++)
+            {
+                if (productes[i] != null)
+                Console.WriteLine(
+                    $"{(productes[i].Nom + " ").PadRight(25, '-')} {(productes[i].Preu().ToString() + " Euros ").PadRight(10, '-')} Quantitat: {productes[i].Quantitat}");
+                else
+                    Console.WriteLine("".PadRight(30, '-'));
+            }
+        }
+
     }
 }

@@ -24,7 +24,7 @@ namespace BotigaCistellaObj
             this.nElements = 0;
             this.diners = 0;
         }
-        public Cistella(Botiga botiga, DateTime data, Producte[] productes, int[] quantitat, double diners)
+        public Cistella(Botiga botiga, DateTime data, Producte[] productes, double diners)
         {
             if(productes.Length == quantitat.Length)
             {
