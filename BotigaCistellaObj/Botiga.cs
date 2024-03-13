@@ -194,6 +194,10 @@ namespace BotigaCistellaObj
         /// <returns>True si ha trobat el producte</returns>
         public bool BuscarProducte(Producte producte)
         {
+            if (producte is null || producte.Nom is null)
+            {
+                return false;
+            }
             return (this[producte.Nom] != null);
         }
         /// <summary>
@@ -203,6 +207,10 @@ namespace BotigaCistellaObj
         /// <returns>True si ha trobat el producte</returns>
         public bool BuscarProducte(string producte)
         {
+            if(producte is null)
+            {
+                return false;
+            }
             return (this[producte] != null);
         }
     }

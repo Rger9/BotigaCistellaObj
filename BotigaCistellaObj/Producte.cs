@@ -21,7 +21,7 @@ namespace BotigaCistellaObj
         /// <summary>
         /// Constructor per defecte, nom a cadena buida, preu_sense_iva i quantitat a 0, iva a 21.
         /// </summary>
-        Producte()
+        public Producte()
         {
             nom = "";
             preu_sense_iva = 0.0;
@@ -34,7 +34,7 @@ namespace BotigaCistellaObj
         /// </summary>
         /// <param name="nom">String que ha de ser un nom valid.</param>
         /// <param name="preu_sense_iva">Double que ha de ser un preu valid (>0).</param>
-        Producte(string nom, double preu_sense_iva) : this ()
+        public Producte(string nom, double preu_sense_iva) : this ()
         {
             this.nom = nom;
             this.preu_sense_iva= preu_sense_iva;
@@ -47,12 +47,19 @@ namespace BotigaCistellaObj
         /// <param name="preu_sense_iva">Double que ha de ser un preu valid (no negatiu).</param>
         /// <param name="iva">Int que ha de ser un iva valid (>0 i <21).</param>
         /// <param name="quantitat">Int que ha de ser una quantitat valida (>0).</param>
-        Producte(string nom, double preu_sense_iva, int iva, int quantitat) : this (nom, preu_sense_iva)
+        public Producte(string nom, double preu_sense_iva, int iva, int quantitat) : this (nom, preu_sense_iva)
         {
             this.iva = iva;
             this.quantitat = quantitat;
         }
 
+        public Producte(Producte p) : this ()
+        {
+            nom = p.nom;
+            preu_sense_iva = p.preu_sense_iva;
+            iva = p.iva;
+            quantitat = p.quantitat;
+        }
         //PROPIETATS
         /// <summary>
         /// Get i Set del nom.
