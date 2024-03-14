@@ -198,6 +198,11 @@ namespace BotigaCistellaObj
         /// <returns>True si ha trobat el producte</returns>
         public bool BuscarProducte(Producte producte)
         {
+
+            if (producte is null || producte.Nom is null)
+            {
+                return false;
+            }
             return (producte.Nom != null);
         }
         /// <summary>
@@ -207,6 +212,11 @@ namespace BotigaCistellaObj
         /// <returns>True si ha trobat el producte</returns>
         public bool BuscarProducte(string producte)
         {
+
+            if(producte is null)
+            {
+                return false;
+            }
             return (producte != null);
         }
         /// <summary>
@@ -290,13 +300,12 @@ namespace BotigaCistellaObj
         {
             if (BuscarProducte(producte) == true)
             {
-                Console.WriteLine("S'ha trobat");
-                for (int i = 0; i < productes.Length ; i++)
+                for (int i = 0; i < productes.Length; i++)
                 {
-                    Console.WriteLine("blurp");
-                    if (productes[i].Nom != producte.Nom)
+                    Console.WriteLine("Producte llegit");
+                    if (productes[i] == null);
+                    else if (productes[i].Nom == producte.Nom)
                     {
-                        Console.WriteLine("wow");
                         productes[i] = null;
                     }
                 }

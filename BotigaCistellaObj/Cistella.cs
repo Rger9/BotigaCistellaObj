@@ -33,7 +33,6 @@ namespace BotigaCistellaObj
             this.diners = diners;
         }
 
-        //PROPIETATS
         public Botiga Botiga
         {
             get { return botiga; }
@@ -60,5 +59,25 @@ namespace BotigaCistellaObj
         }
         
         //METODES PUBLICS
+
+        public void ComprarProducte(Producte producte)
+        {
+            if(botiga.BuscarProducte(producte))
+            {
+                if (nElements == this.productes.Length)
+                {
+                    Console.WriteLine("La cistella esta plena, quant la vols ampliar?");
+                    int num_ampliar;
+                    while (!int.TryParse(Console.ReadLine(), out num_ampliar) || num_ampliar < 0)
+                    {
+                        Console.WriteLine("Num mal escrit! La cistella esta plena, quant la vols ampliar?");
+                    }
+                    Array.Resize(ref this.productes, nElements + num_ampliar);
+                }
+                nElements += 1;
+                productes[nElements] = new Producte(producte);
+            }
+        }
+
     }
 }
