@@ -112,16 +112,19 @@ namespace BotigaCistellaObj
         {
             get
             {
-                int i, index = -1;
-                for (i = 0; i < productes.Length && index != -1; i++)
+                int i = 0, index = -1;
+                while(i < productes.Length && index == -1)
                 {
-                    if (productes[i].Nom == nom)
+
+                    if (productes[i] != null && productes[i].Nom == nom)
+                    {
                         index = i;
+                    }
+                    i++;
                 }
                 if (index == -1) return null;
                 else return productes[index];
             }
-            
         }
 
 
@@ -301,9 +304,7 @@ namespace BotigaCistellaObj
             {
                 for (int i = 0; i < productes.Length; i++)
                 {
-                    Console.WriteLine("Producte llegit");
-                    if (productes[i] == null);
-                    else if (productes[i].Nom == producte.Nom)
+                    if (productes[i] != null && productes[i].Nom == producte.Nom)
                     {
                         productes[i] = null;
                     }

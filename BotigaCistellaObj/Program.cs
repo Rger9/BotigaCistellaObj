@@ -12,9 +12,9 @@
             Producte[] fruites = [platan, poma, pera, picsa];
             Botiga fruiteria = new Botiga("frutas manolo", 10);
             fruiteria.AfegirProducte(fruites);
-            fruiteria.EsborrarProducte(pera);
+            fruiteria.EsborrarProducte(poma);
+            fruiteria.ModificarPreu("pera", 10);
             fruiteria.OrdenarPreus(fruites, 0, fruites.Length -1);
-            fruiteria.ModificarPreu("picsa", 1);
             fruiteria.Mostrar();
 
         }
