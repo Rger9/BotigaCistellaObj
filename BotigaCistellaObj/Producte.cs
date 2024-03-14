@@ -53,6 +53,13 @@ namespace BotigaCistellaObj
             this.quantitat = quantitat;
         }
 
+        public Producte(Producte p) : this ()
+        {
+            nom = p.nom;
+            preu_sense_iva = p.preu_sense_iva;
+            iva = p.iva;
+            quantitat = p.quantitat;
+        }
         //PROPIETATS
         /// <summary>
         /// Get i Set del nom.
@@ -122,6 +129,26 @@ namespace BotigaCistellaObj
         public override string ToString()
         {
             return $"Nom: {this.nom}\tPreu: {this.Preu()}\tQuantitat: {this.quantitat}";
+        }
+        /// <summary>
+        /// operator > amb la propietat Nom
+        /// </summary>
+        /// <param name="p1">Un producte qualsevol</param>
+        /// <param name="p2">Un producte qualsevol</param>
+        /// <returns>true si p1.Nom es mes gran que p2.Nom</returns>
+        public static bool operator>(Producte p1, Producte p2)
+        {
+            return p1.nom.CompareTo(p2.Nom) > 0;
+        }
+        /// <summary>
+        /// operator < amb la propietat Nom
+        /// </summary>
+        /// <param name="p1">Un producte qualsevol</param>
+        /// <param name="p2">Un producte qualsevol</param>
+        /// <returns>true si p1.Nom es mes petit que p2.Nom</returns>
+        public static bool operator <(Producte p1, Producte p2)
+        {
+            return p1.nom.CompareTo(p2.Nom) < 0;
         }
     }
 }

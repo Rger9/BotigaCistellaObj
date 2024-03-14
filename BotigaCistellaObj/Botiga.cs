@@ -198,12 +198,11 @@ namespace BotigaCistellaObj
         /// <returns>True si ha trobat el producte</returns>
         public bool BuscarProducte(Producte producte)
         {
-
             if (producte is null || producte.Nom is null)
             {
                 return false;
             }
-            return (producte.Nom != null);
+            return (this[producte.Nom] != null);
         }
         /// <summary>
         /// Busca un producte
@@ -217,7 +216,7 @@ namespace BotigaCistellaObj
             {
                 return false;
             }
-            return (producte != null);
+            return (this[producte] != null);
         }
         /// <summary>
         /// Ordena els Productes alfabèticament mitjançant el mètode QuickSort.
@@ -280,7 +279,7 @@ namespace BotigaCistellaObj
                 }
                 if (i <= j)
                 {
-                    (productes[i], productes[j]) = (productes[j], productes[i]);
+                    (productes[i], productes[j]) = (new Producte (productes[j]), new Producte (productes[i]));
                     i++;
                     j--;
                 }
