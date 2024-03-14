@@ -26,31 +26,26 @@ namespace BotigaCistellaObj
         }
         public Cistella(Botiga botiga, DateTime data, Producte[] productes, double diners)
         {
-            if(productes.Length == quantitat.Length)
+            this.botiga = botiga;
+            this.data = data;
+            this.productes = new Producte[productes.Length];
+            bool no_diners = false;
+            int i;
+            for (i = 0; i < productes.Length && !no_diners; i++)
             {
-                this.botiga = botiga;
-                this.data = data;
-                this.productes = new Producte[productes.Length];
-                bool no_diners = false;
-                int i;
-                for (i = 0; i < productes.Length && !no_diners; i++)
+                if (botiga.BuscarProducte(productes[i]))
                 {
-                    if (productes[i] != null)
+                    if (diners - botiga[productes[i].Nom].Preu() * productes[i].Quantitat > 0.0)
                     {
-                        if (botiga[productes[i].Nom] != null)
-                        {
-                            if (diners - botiga[productes[i].Nom].Preu() * quantitat[i] > 0.0)
-                            {
-                                diners -= botiga[productes[i].Nom].Preu() * quantitat[i];
-                            }
-                            else no_diners = true;
-                        }
+                        this.productes[i] = new Producte(botiga[productes[i].Nom]);
+                        this.productes[i].Quantitat = productes[i].Quantitat;
+                        diners -= botiga[productes[i].Nom].Preu() * productes[i].Quantitat;
                     }
+                    else no_diners = true;
                 }
-                this.nElements = i + 1;
-                this.diners = diners;
             }
-            
+            this.nElements = i + 1;
+            this.diners = diners;
         }
         //PROPIETATS
         public Botiga Botiga
@@ -66,7 +61,26 @@ namespace BotigaCistellaObj
         public Producte[] Productes
         {
             get { return this.productes; }
-            set { this.productes = value; }
+            set 
+            {
+                this.productes = new Producte[value.Length];
+                bool no_diners = false;
+                int i;
+                for (i = 0; i < productes.Length && !no_diners; i++)
+                {
+                    if (botiga.BuscarProducte(value[i]))
+                    {
+                        if (diners - botiga[value[i].Nom].Preu() * value[i].Quantitat > 0.0)
+                        {
+                            this.productes[i] = new Producte(botiga[value[i].Nom]);
+                            this.productes[i].Quantitat = value[i].Quantitat;
+                            diners -= botiga[value[i].Nom].Preu() * value[i].Quantitat;
+                        }
+                        else no_diners = true;
+                    }
+                }
+                this.nElements = i + 1;
+            }
         }
         public int NElements
         {
@@ -95,16 +109,35 @@ namespace BotigaCistellaObj
                 }
                 nElements += 1;
                 productes[nElements] = new Producte(producte);
+                productes[nElements].Quantitat = botiga[productes[nElements].Nom].Quantitat;
             }
         }
         public void ComprarProducte(Producte[] productes)
         {
-            if (nElements == this.productes.Length)
+            if (productes is not null)
             {
-                Array.Resize(ref this.productes, nElements + 10);
+                for(int i = 0; i < productes.Length; i++)
+                {
+                    ComprarProducte(productes[i]);
+                }
             }
-            nElements += 1;
-            productes[nElements] = producte;
         }
+        public void OrdenarCistella() //ordena bombolla
+        {
+            for(int i = 0;i < productes.Length - 1; i++)
+            {
+                for(int j = 0; j < productes.Length - 1; j++)
+                {
+                    if (productes[j] > productes[j + 1])
+                    {
+                        Producte p = new Producte(productes[j]);
+                        productes[j] = new Producte(productes[j + 1]);
+                        productes[j + 1] = new Producte(p);
+                    }
+                }
+            }
+
+        }
+        
     }
 }
