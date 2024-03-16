@@ -77,6 +77,12 @@ namespace BotigaCistellaObj
             get { return nElements; }
             set { nElements = value; }
         }
+        public int Capacitat
+        {
+            get { return productes.Length; }
+        }
+         
+           
         /// <summary>
         /// Retorna la taula de productes.
         /// </summary>
