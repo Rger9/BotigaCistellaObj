@@ -14,7 +14,14 @@
             fruiteria.AfegirProducte(fruites);
             fruiteria.EsborrarProducte(pera);
             fruiteria.Mostrar();
-
+            Console.WriteLine(fruiteria.NElements);
+            Console.WriteLine(fruiteria.ToStringLine());
+            Botiga fruiteria1 = new Botiga("frutas manolo", 10);
+            fruiteria1.AfegirProducte(fruites);
+            File.Delete(@".\botigues.txt");
+            StreamWriter sw = new StreamWriter(new FileStream(@".\botigues.txt", FileMode.Append));
+            fruiteria1.WriteLineToFile(sw);
+            sw.Close();
         }
     }
 }

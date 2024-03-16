@@ -135,6 +135,7 @@ namespace BotigaCistellaObj
             if (EspaiLliure() != -1)
             {
                 productes[EspaiLliure()] = producte;
+                nElements++;
                 return true;
             }
             else return false;
@@ -149,11 +150,8 @@ namespace BotigaCistellaObj
             int i = 0;
             for (int j = 0;  j <= productes.Length && i < items.Length; j++)
             {
-                if (EspaiLliure() != -1)
-                {
-                    productes[EspaiLliure()] = items[i];
+                if (AfegirProducte(items[j]))
                     i++;
-                }
             }
             return (i == items.Length);
         }
@@ -328,6 +326,19 @@ namespace BotigaCistellaObj
                     Console.WriteLine("".PadRight(30, '-'));
             }
         }
-
+        public string ToStringLine()
+        {
+            string s = "";
+            s += $"{NomBotiga}; {nElements}";
+            for (int i = 0; i< nElements ; i++)
+            {
+                s += $"; {productes[i].ToStringLine()}";
+            }
+            return s;
+        }
+        public void WriteLineToFile(StreamWriter sw)
+        {
+            sw.WriteLine(this.ToStringLine());
+        }
     }
 }

@@ -39,24 +39,9 @@ namespace BotigaCistellaObj
             this.botiga = botiga;
             this.data = data;
             this.productes = new Producte[productes.Length];
-            bool no_diners = false;
-            int i = 0;
-            while(i < productes.Length && !no_diners)
-            {
-                if (botiga.BuscarProducte(productes[i]))
-                {
-                    if (diners - botiga[productes[i].Nom].Preu() * productes[i].Quantitat > 0.0)
-                    {
-                        this.productes[i] = new Producte(botiga[productes[i].Nom]);
-                        this.productes[i].Quantitat = productes[i].Quantitat;
-                        diners -= botiga[productes[i].Nom].Preu() * productes[i].Quantitat;
-                    }
-                    else no_diners = true;
-                }
-                i++;
-            }
-            this.nElements = i + 1;
             this.diners = diners;
+            this.nElements = productes.Length;
+            this.ComprarProducte(productes);
         }
         //PROPIETATS
         /// <summary>
@@ -83,24 +68,7 @@ namespace BotigaCistellaObj
             get { return this.productes; }
             set 
             {
-                this.productes = new Producte[value.Length];
-                bool no_diners = false;
-                int i = 0;
-                while(i < productes.Length && !no_diners)
-                {
-                    if (botiga.BuscarProducte(value[i]))
-                    {
-                        if (diners - botiga[value[i].Nom].Preu() * value[i].Quantitat > 0.0)
-                        {
-                            this.productes[i] = new Producte(botiga[value[i].Nom]);
-                            this.productes[i].Quantitat = value[i].Quantitat;
-                            diners -= botiga[value[i].Nom].Preu() * value[i].Quantitat;
-                        }
-                        else no_diners = true;
-                    }
-                    i++;
-                }
-                this.nElements = i + 1;
+                this.ComprarProducte(value);
             }
         }
         /// <summary>
@@ -138,9 +106,19 @@ namespace BotigaCistellaObj
                     }
                     Array.Resize(ref this.productes, nElements + num_ampliar);
                 }
-                nElements++;
+                while (diners - botiga[producte.Nom].Preu() * producte.Quantitat < 0.0)
+                {
+                    Console.WriteLine($"No et queden diners, quants diners vols afegir? (et falten {Math.Round((botiga[producte.Nom].Preu() * producte.Quantitat - diners),2)} euros)");
+                    if (Double.TryParse(Console.ReadLine(), out double result) && result > 0.0)
+                        this.diners += result;
+                }
                 productes[nElements] = new Producte(producte);
                 productes[nElements].Quantitat = botiga[productes[nElements].Nom].Quantitat;
+                nElements++;
+                diners -= botiga[producte.Nom].Preu() * producte.Quantitat;
+                //nElements++;
+                //productes[nElements] = new Producte(producte);
+                //productes[nElements].Quantitat = botiga[productes[nElements].Nom].Quantitat;
             }
         }
         /// <summary>
@@ -171,7 +149,6 @@ namespace BotigaCistellaObj
                     }
                 }
             }
-
         }
         public void Mostra()
         {
@@ -193,7 +170,22 @@ namespace BotigaCistellaObj
             {
                 s += productes[i].ToString() + "\n";
             }
-            return base.ToString();
+            return s;
+        }
+        public string ToStringLine()
+        {
+            string s = "";
+            s += this.botiga.NomBotiga + "; " + this.Data.ToString("dd/MM/yyyy") + "; " + this.NElements + "; " + this.diners;
+            for(int i = 0; i < nElements; i++)
+            {
+                if (this.botiga.BuscarProducte(this.productes[i]))
+                    s += "; " + this.productes[i].ToStringLine();
+            }
+            return s;
+        }
+        public void WriteLineToFile(StreamWriter sw)
+        {
+            sw.WriteLine(this.ToStringLine());
         }
     }
 }

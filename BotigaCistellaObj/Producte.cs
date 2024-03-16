@@ -130,6 +130,10 @@ namespace BotigaCistellaObj
         {
             return $"Nom: {this.nom}\tPreu: {this.Preu()}\tQuantitat: {this.quantitat}";
         }
+        public string ToStringLine()
+        {
+            return $"{nom}. {preu_sense_iva}. {iva}. {quantitat}";
+        }
         /// <summary>
         /// operator > amb la propietat Nom
         /// </summary>
