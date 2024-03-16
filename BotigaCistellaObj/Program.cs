@@ -6,7 +6,7 @@
         {
             Producte platan = new Producte("platanoCanarias", 5, 5, 5);
             Producte poma = new Producte("poma", 6, 5, 5);
-            Producte pera = new Producte("pera", 4, 5, 5);
+            Producte pera = new Producte("pera", 4, 1, 5);
             Producte picsa = new Producte("picsa", 3, 5, 5);
 
             Producte[] fruites = [platan, poma, pera, picsa];
@@ -14,9 +14,9 @@
             fruiteria.AfegirProducte(fruites);
             fruiteria.EsborrarProducte(poma);
             fruiteria.ModificarPreu("pera", 10);
-            fruiteria.OrdenarPreus(fruites, 0, fruites.Length -1);
+            fruiteria.OrdenarPreu();
             fruiteria.Mostrar();
-
         }
+
     }
 }
