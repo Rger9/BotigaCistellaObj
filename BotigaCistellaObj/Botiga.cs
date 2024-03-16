@@ -336,9 +336,10 @@ namespace BotigaCistellaObj
         /// <returns>True si s'ha borrat correctament</returns>
         public bool EsborrarProducte(Producte producte)
         {
+
             if (BuscarProducte(producte) == true)
             {
-                for (int i = 0; i < productes.Length; i++)
+                for (int i = 0; i < nElements; i++)
                 {
                     if (productes[i] != null && productes[i].Nom == producte.Nom)
                     {
@@ -346,6 +347,7 @@ namespace BotigaCistellaObj
                         nElements--;
                     }
                 }
+                this.NullDreta();
                 return true;
             }
             else return false;

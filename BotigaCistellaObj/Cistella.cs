@@ -117,9 +117,6 @@ namespace BotigaCistellaObj
                 productes[nElements].Quantitat = botiga[productes[nElements].Nom].Quantitat;
                 nElements++;
                 diners -= botiga[producte.Nom].Preu() * producte.Quantitat;
-                //nElements++;
-                //productes[nElements] = new Producte(producte);
-                //productes[nElements].Quantitat = botiga[productes[nElements].Nom].Quantitat;
             }
         }
         /// <summary>
