@@ -138,11 +138,15 @@ namespace BotigaCistellaObj
                     }
                     Array.Resize(ref this.productes, nElements + num_ampliar);
                 }
-                nElements += 1;
+                nElements++;
                 productes[nElements] = new Producte(producte);
                 productes[nElements].Quantitat = botiga[productes[nElements].Nom].Quantitat;
             }
         }
+        /// <summary>
+        /// Afegeix una taula de productes al atribut de la taula de productes
+        /// </summary>
+        /// <param name="productes"></param>
         public void ComprarProducte(Producte[] productes)
         {
             if (productes is not null)
