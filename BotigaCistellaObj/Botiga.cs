@@ -112,16 +112,19 @@ namespace BotigaCistellaObj
         {
             get
             {
-                int i, index = -1;
-                for (i = 0; i < productes.Length && index != -1; i++)
+                int i = 0, index = -1;
+                while(i < productes.Length && index == -1)
                 {
-                    if (productes[i].Nom == nom)
+
+                    if (productes[i] != null && productes[i].Nom == nom)
+                    {
                         index = i;
+                    }
+                    i++;
                 }
                 if (index == -1) return null;
                 else return productes[index];
             }
-            
         }
 
 
@@ -150,8 +153,12 @@ namespace BotigaCistellaObj
             int i = 0;
             for (int j = 0;  j <= productes.Length && i < items.Length; j++)
             {
-                if (AfegirProducte(items[j]))
+                if (EspaiLliure() != -1)
+                {
+                    productes[EspaiLliure()] = items[i];
+                    nElements++;
                     i++;
+                }
             }
             return (i == items.Length);
         }
@@ -201,7 +208,6 @@ namespace BotigaCistellaObj
                 return false;
             }
             return (this[producte.Nom] != null);
-            return (producte.Nom != null);
         }
         /// <summary>
         /// Busca un producte
@@ -210,11 +216,46 @@ namespace BotigaCistellaObj
         /// <returns>True si ha trobat el producte</returns>
         public bool BuscarProducte(string producte)
         {
+
             if(producte is null)
             {
                 return false;
             }
             return (this[producte] != null);
+        }
+        /// <summary>
+        /// Col·loca tots els Productes a l'esquerra de l'array, i els valors 'null' a la dreta
+        /// </summary>
+        /// <param name="productes">Array de productes</param>
+        public void NullDreta()
+        {
+            int j = 0;
+            Producte[] aux = new Producte[productes.Length];
+            for (int i = 0; i < productes.Length; i++)
+            {
+                if (productes[i] != null)
+                {
+                    aux[j] = productes[i];
+                    j++;
+                }
+            }
+            productes = aux;
+        }
+        /// <summary>
+        /// Ordena els productes de la botiga Alfabèticament.
+        /// </summary>
+        public void OrdenarProducte()
+        {
+            NullDreta();
+            QuicksortProducte(productes, 0, NElements - 1);
+        }
+        /// <summary>
+        /// Ordena els productes de la botiga de menys a més preu.
+        /// </summary>
+        public void OrdenarPreu()
+        {
+            NullDreta();
+            QuicksortPreu(productes, 0, NElements - 1);
         }
         /// <summary>
         /// Ordena els Productes alfabèticament mitjançant el mètode QuickSort.
@@ -223,7 +264,7 @@ namespace BotigaCistellaObj
         /// <param name="leftIndex">Primera posició de l'array de productes (més a l'esquerra, el 0).</param>
         /// <param name="rightIndex">Última posició de l'array de productes (més a la dreta, la llargada de l'array menys 1).</param>
         /// <returns>Array de productes</returns>
-        public Producte[] OrdenarProducte(Producte[] productes, int leftIndex, int rightIndex)
+        private Producte[] QuicksortProducte(Producte[] productes, int leftIndex, int rightIndex)
         {
             int i = leftIndex;
             int j = rightIndex;
@@ -241,15 +282,15 @@ namespace BotigaCistellaObj
                 }
                 if (i <= j)
                 {
-                    (productes[i], productes[j]) = (productes[j], productes[i]);
+                    Permutar(ref productes[i], ref productes[j]);
                     i++;
                     j--;
                 }
             }
             if (leftIndex < j)
-                OrdenarProducte(productes, leftIndex, j);
+                QuicksortProducte(productes, leftIndex, j);
             if (i < rightIndex)
-                OrdenarProducte(productes, i, rightIndex);
+                QuicksortProducte(productes, i, rightIndex);
             return productes;
         }
         /// <summary>
@@ -259,7 +300,7 @@ namespace BotigaCistellaObj
         /// <param name="leftIndex">Primera posició de l'array de productes (més a l'esquerra, el 0).</param>
         /// <param name="rightIndex">Última posició de l'array de productes (més a la dreta, la llargada de l'array menys 1).</param>
         /// <returns>Array de Productes</returns>
-        public Producte[] OrdenarPreus(Producte[] productes, int leftIndex, int rightIndex)
+        private Producte[] QuicksortPreu(Producte[] productes, int leftIndex, int rightIndex)
         {
             int i = leftIndex;
             int j = rightIndex;
@@ -277,15 +318,15 @@ namespace BotigaCistellaObj
                 }
                 if (i <= j)
                 {
-                    (productes[i], productes[j]) = (productes[j], productes[i]);
+                    Permutar(ref productes[i], ref productes[j]);
                     i++;
                     j--;
                 }
             }
             if (leftIndex < j)
-                OrdenarProducte(productes, leftIndex, j);
+                QuicksortProducte(productes, leftIndex, j);
             if (i < rightIndex)
-                OrdenarProducte(productes, i, rightIndex);
+                QuicksortProducte(productes, i, rightIndex);
             return productes;
         }
         /// <summary>
@@ -297,14 +338,12 @@ namespace BotigaCistellaObj
         {
             if (BuscarProducte(producte) == true)
             {
-                Console.WriteLine("S'ha trobat");
-                for (int i = 0; i < productes.Length ; i++)
+                for (int i = 0; i < productes.Length; i++)
                 {
-                    Console.WriteLine("blurp");
-                    if (productes[i].Nom != producte.Nom)
+                    if (productes[i] != null && productes[i].Nom == producte.Nom)
                     {
-                        Console.WriteLine("wow");
                         productes[i] = null;
+                        nElements--;
                     }
                 }
                 return true;
@@ -316,16 +355,27 @@ namespace BotigaCistellaObj
         /// </summary>
         public void Mostrar()
         {
-            Console.WriteLine($"- {NomBotiga.ToUpper()} -");
+            Console.WriteLine(this.ToString());
+        }
+        /// <summary>
+        /// Transforma els productes de la botiga en un string, amb els seus respectius noms, preis i quantitats.
+        /// </summary>
+        /// <returns>String amb els valors dels productes.</returns>
+        public override string ToString()
+        {
+            string text = "";
+            text += $"- {NomBotiga.ToUpper()} -\n";
             for (int i = 0; i < productes.Length; i++)
             {
                 if (productes[i] != null)
-                Console.WriteLine(
-                    $"{(productes[i].Nom + " ").PadRight(25, '-')} {(productes[i].Preu().ToString() + " Euros ").PadRight(10, '-')} Quantitat: {productes[i].Quantitat}");
+                    text +=
+                        $"{(productes[i].Nom + " ").PadRight(25, '-')} {(productes[i].Preu().ToString() + " Euros ").PadRight(10, '-')} Quantitat: {productes[i].Quantitat}\n";
                 else
-                    Console.WriteLine("".PadRight(30, '-'));
+                    text += "".PadRight(30, '-') + "\n";
             }
+            return text;
         }
+
         public string ToStringLine()
         {
             string s = "";
@@ -339,6 +389,11 @@ namespace BotigaCistellaObj
         public void WriteLineToFile(StreamWriter sw)
         {
             sw.WriteLine(this.ToStringLine());
+        }
+        public void Permutar(ref Producte a, ref Producte b)
+        {
+            (a, b) = (b, a);
+
         }
     }
 }

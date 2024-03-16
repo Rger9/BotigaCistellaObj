@@ -14,7 +14,7 @@ namespace BotigaCistellaObj
         private Producte[] productes;
         private int nElements;
         private double diners;
-        
+
         //CONTRUCTORS
         /// <summary>
         /// Constructor Per defecte
@@ -43,6 +43,7 @@ namespace BotigaCistellaObj
             this.nElements = productes.Length;
             this.ComprarProducte(productes);
         }
+
         //PROPIETATS
         /// <summary>
         /// Get i Set de Botiga
@@ -50,7 +51,7 @@ namespace BotigaCistellaObj
         public Botiga Botiga
         {
             get { return botiga; }
-            set { botiga = value; } 
+            set { botiga = value; }
         }
         /// <summary>
         /// Get i set de Data
@@ -66,7 +67,7 @@ namespace BotigaCistellaObj
         public Producte[] Productes
         {
             get { return this.productes; }
-            set 
+            set
             {
                 this.ComprarProducte(value);
             }
@@ -86,7 +87,7 @@ namespace BotigaCistellaObj
             get { return this.diners; }
             set { this.diners = value; }
         }
-        
+
         //METODES PUBLICS
         /// <summary>
         /// Afegeix un producte a la taula de productes si es que existeix a botiga i tens suficients diners
@@ -94,7 +95,7 @@ namespace BotigaCistellaObj
         /// <param name="producte">Producte que volem comprar</param>
         public void ComprarProducte(Producte producte)
         {
-            if(botiga.BuscarProducte(producte))
+            if (botiga.BuscarProducte(producte))
             {
                 if (nElements == this.productes.Length)
                 {
@@ -129,7 +130,7 @@ namespace BotigaCistellaObj
         {
             if (productes is not null)
             {
-                for(int i = 0; i < productes.Length; i++)
+                for (int i = 0; i < productes.Length; i++)
                 {
                     ComprarProducte(productes[i]);
                 }
@@ -137,9 +138,9 @@ namespace BotigaCistellaObj
         }
         public void OrdenarCistella() //ordena bombolla
         {
-            for(int i = 0;i < productes.Length - 1; i++)
+            for (int i = 0; i < productes.Length - 1; i++)
             {
-                for(int j = 0; j < productes.Length - 1; j++)
+                for (int j = 0; j < productes.Length - 1; j++)
                 {
                     if (productes[j] > productes[j + 1])
                     {
@@ -150,6 +151,7 @@ namespace BotigaCistellaObj
                 }
             }
         }
+ 
         public void Mostra()
         {
             Console.WriteLine(this.ToString());
