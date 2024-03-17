@@ -52,13 +52,28 @@ namespace BotigaCistellaObj
             this.iva = iva;
             this.quantitat = quantitat;
         }
-
+        /// <summary>
+        /// Constructor copia
+        /// </summary>
+        /// <param name="p">Producte que no ha de ser null</param>
         public Producte(Producte p) : this ()
         {
             nom = p.nom;
             preu_sense_iva = p.preu_sense_iva;
             iva = p.iva;
             quantitat = p.quantitat;
+        }
+        /// <summary>
+        /// Constructor a partir d'un string amb format csv
+        /// </summary>
+        /// <param name="liniaFitxer">String que compte tots els atributs d'un Producte separats per "."</param>
+        public Producte(string liniaFitxer)
+        {
+            string[] sub = liniaFitxer.Split(". ");
+            nom = sub[0];
+            preu_sense_iva = Convert.ToInt32(sub[1]);
+            iva = Convert.ToInt32(sub[2]);
+            quantitat = Convert.ToInt32(sub[3]);
         }
         //PROPIETATS
         /// <summary>
@@ -69,7 +84,6 @@ namespace BotigaCistellaObj
             get { return nom; } 
             set { nom = value; }
         }
-
         /// <summary>
         /// Get i Set del preu_sense_iva, ens assegurem que no assignem un valor negatiu.
         /// </summary>
@@ -83,7 +97,6 @@ namespace BotigaCistellaObj
                 preu_sense_iva = value; 
             }
         }
-
         /// <summary>
         /// Get i Set del iva, ens assegurem que no assignem un valor negatiu ni major a 21.
         /// </summary>
@@ -97,7 +110,6 @@ namespace BotigaCistellaObj
                 iva = value; 
             }
         }
-
         /// <summary>
         /// Get i Set de la quantitat, ens assegurem que no assignem un valor negatiu.
         /// </summary>
@@ -121,7 +133,6 @@ namespace BotigaCistellaObj
         {
             return Math.Round(preu_sense_iva * (100+iva) / 100, 2);
         }
-
         /// <summary>
         /// Metode que retorna un string continguent tota la informació del objecte producte.
         /// </summary>
@@ -130,6 +141,10 @@ namespace BotigaCistellaObj
         {
             return $"Nom: {this.nom}\tPreu: {this.Preu()}\tQuantitat: {this.quantitat}";
         }
+        /// <summary>
+        /// Metode que transforma els atribut del Producte actual en un string amb format csv, separat per ". "
+        /// </summary>
+        /// <returns>String de tots els atributs del Producte separats per ". "</returns>
         public string ToStringLine()
         {
             return $"{nom}. {preu_sense_iva}. {iva}. {quantitat}";

@@ -9,7 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace BotigaCistellaObj
 {
     /// <summary>
-    /// 
+    /// Classe Botiga que representa una botiga amb un nom, una taula de Productes i un int nElements d'aquesta taula
     /// </summary>
     internal class Botiga
     {
@@ -59,7 +59,21 @@ namespace BotigaCistellaObj
             }
             nElements = j + 1;
         }
-
+        /// <summary>
+        /// Inicialitza la botiga a partir d'un string en format csv
+        /// </summary>
+        /// <param name="liniaFitxer">String que conte tots els atributs que componen una Botiga, en format csv separat per "/ "</param>
+        public Botiga(string liniaFitxer)
+        {
+            string[] subs = liniaFitxer.Split("/ ");
+            nomBotiga = subs[0];
+            nElements = Convert.ToInt32(subs[1]);
+            Producte[] productes = new Producte[subs.Length - 2];
+            for(int i = 2; i < subs.Length; i++)
+            {
+                productes[i-2] = new Producte(subs[i]);
+            }
+        }
         // PROPIETATS
         /// <summary>
         /// Retorna el nom de la botiga.
@@ -107,7 +121,7 @@ namespace BotigaCistellaObj
         /// Indexador que retorna l'índex d'un producte el qual coincideix amb el nom paràmetre.
         /// </summary>
         /// <param name="nom">Nom del producte a buscar.</param>
-        /// <returns>Retorna l'índex del producte cercat. Si no es troba, retorna -1.</returns>
+        /// <returns>Retorna el producte si el troba, si no el troba retorna null.</returns>
         public Producte this[string nom]
         {
             get
@@ -126,8 +140,6 @@ namespace BotigaCistellaObj
                 else return productes[index];
             }
         }
-
-
         /// <summary>
         /// Afegeix el producte desitjat al primer espai lliure que trobi a la botiga.
         /// </summary>
@@ -377,21 +389,25 @@ namespace BotigaCistellaObj
             }
             return text;
         }
-
+        /// <summary>
+        /// Metode que transforma els atribut de la Botiga actual en un string amb format csv, separat per "/ "
+        /// </summary>
+        /// <returns>String de tots els atributs de la Botiga separats per "/ "</returns>
         public string ToStringLine()
         {
             string s = "";
-            s += $"{NomBotiga}; {nElements}";
+            s += $"{NomBotiga}/ {nElements}";
             for (int i = 0; i< nElements ; i++)
             {
-                s += $"; {productes[i].ToStringLine()}";
+                s += $"/ {productes[i].ToStringLine()}";
             }
             return s;
         }
-        public void WriteLineToFile(StreamWriter sw)
-        {
-            sw.WriteLine(this.ToStringLine());
-        }
+        /// <summary>
+        /// Intercanvia dos Productes
+        /// </summary>
+        /// <param name="a">Producte vàlid</param>
+        /// <param name="b">Producte vàlid</param>
         public void Permutar(ref Producte a, ref Producte b)
         {
             (a, b) = (b, a);
