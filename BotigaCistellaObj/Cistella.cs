@@ -221,6 +221,14 @@ namespace BotigaCistellaObj
             return diners;
         }
         /// <summary>
+        /// Afegeix una quantitat de diners a la nostra cistella
+        /// </summary>
+        /// <param name="diners">Int diners ha de ser > 0</param>
+        public void AfegirDiners(int diners)
+        {
+            this.diners += diners;
+        }
+        /// <summary>
         /// Metode de sobreescriptura del metode ToString() que converteix la cistella en format string
         /// </summary>
         /// <returns>El nom de la botiga i de tots els productes de la taula productes de la cistella en format string, com si fossin un ticket de la compra</returns>

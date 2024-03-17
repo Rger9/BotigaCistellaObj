@@ -11,6 +11,7 @@
             Producte[] fruites = [platan, poma, pera, picsa];
             Botiga fruiteria = new Botiga("frutas manolo", 10);
 
+            StreamWriter sw = new StreamWriter(new FileStream(@".\botigues.txt", FileMode.Append));
             char opcio = '0';
             while (opcio != 'q' && opcio != 'Q')
             {
