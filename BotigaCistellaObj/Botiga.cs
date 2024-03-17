@@ -90,13 +90,7 @@ namespace BotigaCistellaObj
         {
             get { return nElements; }
             set { nElements = value; }
-        }
-        public int Capacitat
-        {
-            get { return productes.Length; }
-        }
-         
-           
+        }        
         /// <summary>
         /// Retorna la taula de productes.
         /// </summary>
@@ -385,7 +379,7 @@ namespace BotigaCistellaObj
         {
             string text = "";
             text += $"- {NomBotiga.ToUpper()} -\n";
-            for (int i = 0; i < productes.Length; i++)
+            for (int i = 0; i < nElements; i++)
             {
                 if (productes[i] != null)
                     text +=

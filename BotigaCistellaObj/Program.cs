@@ -1,17 +1,21 @@
-﻿namespace BotigaCistellaObj
+﻿using System.Security;
+
+namespace BotigaCistellaObj
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Producte platan = new Producte("platanoCanarias", 5, 5, 5);
-            Producte poma = new Producte("poma", 6, 5, 5);
-            Producte pera = new Producte("pera", 4, 1, 5);
-            Producte picsa = new Producte("picsa", 3, 5, 5);
-            Producte[] fruites = [platan, poma, pera, picsa];
-            Botiga fruiteria = new Botiga("frutas manolo", 10);
-
-            StreamWriter sw = new StreamWriter(new FileStream(@".\botigues.txt", FileMode.Append));
+            Botiga fruiteria = new Botiga("Fruites Manolo", 10);
+            Cistella cistella = new Cistella();
+            cistella.Botiga = fruiteria;
+            // PERSISTÈNCIA DE FITXERS: Si hi ha un fitxer ja creat amb dades de la botiga i cistella, se'l llegeix i guarda les dades
+            if (File.Exists(@".\cistella.txt"))
+            {
+                StreamReader sR = new StreamReader(@".\cistella.txt");
+                cistella = new Cistella(sR.ReadLine(), out fruiteria);
+                sR.Close();
+            }
             char opcio = '0';
             while (opcio != 'q' && opcio != 'Q')
             {
@@ -30,10 +34,13 @@
                 }
                 else if (opcio == '2')
                 {
-                    OpcionsComprador(opcio);
+                    OpcionsComprador(opcio, cistella);
                 }
             }
-
+            // PERSISTÈNCIA DE FITXERS: Quan sortim del menú amb la 'q', guardem les dades de la botiga i cistella al fitxer
+            StreamWriter sW = new StreamWriter(@".\cistella.txt");
+            cistella.WriteLineToFile(sW);
+            sW.Close();
 
         }
         // MÈTODES
@@ -194,12 +201,12 @@
                     PintarMenu(MenuAdministrador());
                     opcio = Console.ReadKey().KeyChar;
                 }
-                while (!ValidarOpcio(opcio, '1', '7'));
+                while (!ValidarOpcio(opcio, '1', '6'));
                 Console.Clear();
                 SeleccionarAdministrador(opcio, botiga);
             }
         }
-        static void OpcionsComprador(char opcio)
+        static void OpcionsComprador(char opcio, Cistella cistella)
         {
             PintarOpcio(Menu(), '2');
             while (opcio != 'q' && opcio != 'Q')
@@ -210,8 +217,9 @@
                     PintarMenu(MenuComprador());
                     opcio = Console.ReadKey().KeyChar;
                 }
-                while (!ValidarOpcio(opcio, '1', '3'));
+                while (!ValidarOpcio(opcio, '1', '4'));
                 Console.Clear();
+                SeleccionarComprador(opcio, cistella);
             }
         }
         static void SeleccionarAdministrador(char opcio, Botiga botiga)
@@ -226,6 +234,7 @@
                     // Preguntem pels productes que volem afegir amb els respectius preus.
                     do
                     {
+                        Pintar("AFEGIR PRODUCTE/S");
                         Console.WriteLine("Escriu els productes que voldràs afegir (ex: pomes, peres, platans, melons)");
                         textProductes = Console.ReadLine();
                         Console.WriteLine("Escriu els preus respectius dels productes afegits(3.50, 4.20, 5.99, 6, 6.80)");
@@ -244,7 +253,7 @@
                     if (productes.Length == 1)
                     {
                         Producte a = new Producte(productes[0], Convert.ToDouble(preus[0]));
-                        if (botiga.NElements < botiga.Capacitat)
+                        if (botiga.NElements < botiga.Productes.Length)
                         {
                             botiga.AfegirProducte(a);
                         }
@@ -261,7 +270,7 @@
                             Producte aux = new Producte(productes[i], Convert.ToDouble(preus[i]));
                             items[i] = aux;
                         }
-                        if (botiga.NElements + items.Length < botiga.Capacitat)
+                        if (botiga.NElements + items.Length < botiga.Productes.Length)
                         {
                             botiga.AfegirProducte(items);
                         }
@@ -270,28 +279,44 @@
                             BotigaPlena(botiga);
                         }
                     }
-
-
-
-
                     break;
                 case '2':
                     // AMPLIAR BOTIGA
+                    Pintar("AMPLIAR BOTIGA");
+                    Console.WriteLine("En quants espais vols ampliar la botiga?");
+                    int espais = Convert.ToInt32(Console.ReadLine);
+                    if (espais > 0) botiga.AmpliarBotiga(espais);
+                    else Console.WriteLine("ERROR: Has d'introduïr un numero més gran que 0");
                     break;
                 case '3':
                     // MODIFICAR PREU
+                    Pintar("MODIFICAR PREU");
+                    Console.WriteLine("Quin producte en voldries modificar el preu?");
+                    string producte = Console.ReadLine();
+                    Console.WriteLine("Quin en serà el nou preu?");
+                    double preu = Convert.ToDouble(Console.ReadLine());
+                    if (botiga.ModificarPreu(producte, preu)) Console.WriteLine("Preu del producte canviat exitosament!");
+                    else Console.WriteLine("ERROR: No s'ha trobat el producte a modificar");
                     break;
                 case '4':
                     // ORDENAR BOTIGA PREU
+                    Pintar("BOTIGA ORDENADA PER PREU");
+                    botiga.OrdenarPreu();
+                    botiga.Mostrar();
                     break;
                 case '5':
                     // ORDENAR BOTIGA NOM
+                    Pintar("BOTIGA ORDENADA ALFABÈTICAMENT");
+                    botiga.OrdenarProducte();
+                    botiga.Mostrar();
                     break;
                 case '6':
                     // MOSTRAR BOTIGA
+                    botiga.Mostrar();
                     break;
-
+                    
             }
+            PremPerContinuar();
         }
         static void BotigaPlena(Botiga botiga)
         {
@@ -309,35 +334,59 @@
                 else if (sn == 'n')
                 {
                     Console.WriteLine("Tornant al menu...");
-                    Thread.Sleep(2000);
                 }
                 else
                 {
                     Console.WriteLine("ERROR: Introdueix s o n");
-                    Thread.Sleep(2000);
                 }
-                Console.Clear();
             }
             
         }
-        static void SeleccionarComprador(char opcio)
+        static void SeleccionarComprador(char opcio, Cistella cistella)
         {
             PintarOpcio(MenuComprador(), opcio);
             switch (opcio)
             {
                 case '1':
                     // COMPRAR PRODUCTE/S
+                    Producte[] items = new Producte[20];
+                    string nomProducte="";
+                    int i = 0;
+                    Pintar("COMPRAR PRODUCTE/S");
+                    Console.WriteLine("Quins productes vols comprar? (escriu '..' per deixar de comprar productes)");
+                    while (nomProducte != "..")
+                    {
+                        nomProducte = Console.ReadLine();
+                        if (!cistella.Botiga.BuscarProducte(nomProducte) && nomProducte != "..")
+                        {
+                            Console.WriteLine("ERROR: Has escrit malament el nom del producte. Torna-ho a intentar.");
+                        }
+                        else if (cistella.Botiga.BuscarProducte(nomProducte))
+                        {
+                            items[i] = cistella.Botiga[nomProducte];
+                            i++;
+                            Console.WriteLine($"{nomProducte} afegit a la cistella!");
+                        }
+                    }
+                    cistella.ComprarProducte(items);
                     break;
                 case '2':
                     // ORDENAR CISTELLA
+                    Pintar("ORDENAR CISTELLA");
+                    cistella.OrdenarCistella();
+                    cistella.Mostra();
                     break;
                 case '3':
                     // MOSTRAR CISTELLA
+                    cistella.Mostra();
                     break;
                 case '4':
                     // COMPRAR CISTELLA
+                    Console.WriteLine("Compra finalitzada! S'ha buidat la cistella");
+                    cistella.ComprarCistella();
                     break;
             }
+            PremPerContinuar();
 
         }
     }
