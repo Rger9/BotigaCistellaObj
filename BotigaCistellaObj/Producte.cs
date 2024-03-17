@@ -26,7 +26,7 @@ namespace BotigaCistellaObj
             nom = "";
             preu_sense_iva = 0.0;
             iva = 21;
-            quantitat = 0;
+            quantitat = 1;
         }
 
         /// <summary>

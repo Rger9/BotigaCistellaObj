@@ -78,11 +78,12 @@ namespace BotigaCistellaObj
                $"║            Botiga                ║\n" +
                $"╠══════════════════════════════════╣\n" +
                $"║  1 - Afegir producte/s           ║\n" +
-               $"║  2 - Ampliar botiga              ║\n" +
-               $"║  3 - Modificar Preu              ║\n" +
-               $"║  4 - Ordenar botiga per preu     ║\n" +
-               $"║  5 - Ordenar botiga per nom      ║\n" +
-               $"║  6 - Mostrar botiga              ║\n" +
+               $"║  2 - Esborrar producte           ║\n" +
+               $"║  3 - Ampliar botiga              ║\n" +
+               $"║  4 - Modificar Preu              ║\n" +
+               $"║  5 - Ordenar botiga per preu     ║\n" +
+               $"║  6 - Ordenar botiga per nom      ║\n" +
+               $"║  7 - Mostrar botiga              ║\n" +
                $"║  q - torna enrere                ║\n" +
                $"╚══════════════════════════════════╝";
 
@@ -98,7 +99,7 @@ namespace BotigaCistellaObj
 
             menu =
 
-               $"\n╔═════════════════════════════════╗\n" +
+               $"\n╔══════════════════════════════════╗\n" +
                $"║            Cistella              ║\n" +
                $"╠══════════════════════════════════╣\n" +
                $"║  1 - Comprar producte/s          ║\n" +
@@ -241,7 +242,7 @@ namespace BotigaCistellaObj
                     PintarMenu(MenuAdministrador());
                     opcio = Console.ReadKey().KeyChar;
                 }
-                while (!ValidarOpcio(opcio, '1', '6'));
+                while (!ValidarOpcio(opcio, '1', '7'));
                 Console.Clear();
                 SeleccionarAdministrador(opcio, botiga);
             }
@@ -332,14 +333,21 @@ namespace BotigaCistellaObj
                     }
                     break;
                 case '2':
+                    // BORRAR PRODUCTE
+                    Pintar("BORRAR PRODUCTE");
+                    Console.WriteLine("Quin producte vols borrar?");
+                    string borrar = Console.ReadLine();
+                    if (botiga[borrar] != null) botiga.EsborrarProducte(botiga[borrar]);
+                    break;
+                case '3':
                     // AMPLIAR BOTIGA
                     Pintar("AMPLIAR BOTIGA");
                     Console.WriteLine("En quants espais vols ampliar la botiga?");
-                    int espais = Convert.ToInt32(Console.ReadLine);
+                    int espais = Convert.ToInt32(Console.ReadLine());
                     if (espais > 0) botiga.AmpliarBotiga(espais);
                     else Console.WriteLine("ERROR: Has d'introduïr un numero més gran que 0");
                     break;
-                case '3':
+                case '4':
                     // MODIFICAR PREU
                     Pintar("MODIFICAR PREU");
                     Console.WriteLine("Quin producte en voldries modificar el preu?");
@@ -349,25 +357,25 @@ namespace BotigaCistellaObj
                     if (botiga.ModificarPreu(producte, preu)) Console.WriteLine("Preu del producte canviat exitosament!");
                     else Console.WriteLine("ERROR: No s'ha trobat el producte a modificar");
                     break;
-                case '4':
+                case '5':
                     // ORDENAR BOTIGA PREU
                     Pintar("BOTIGA ORDENADA PER PREU");
                     botiga.OrdenarPreu();
                     botiga.Mostrar();
                     break;
-                case '5':
+                case '6':
                     // ORDENAR BOTIGA NOM
                     Pintar("BOTIGA ORDENADA ALFABÈTICAMENT");
                     botiga.OrdenarProducte();
                     botiga.Mostrar();
                     break;
-                case '6':
+                case '7':
                     // MOSTRAR BOTIGA
                     botiga.Mostrar();
                     break;
                     
             }
-            PremPerContinuar();
+            if (opcio != 'q' || opcio != 'Q') PremPerContinuar();
         }
         /// <summary>
         /// Quan la botiga està plena, pregunta si la vols ampliar
@@ -446,7 +454,7 @@ namespace BotigaCistellaObj
                     cistella.ComprarCistella();
                     break;
             }
-            PremPerContinuar();
+            if (opcio != 'q' || opcio != 'Q') PremPerContinuar();
 
         }
     }
