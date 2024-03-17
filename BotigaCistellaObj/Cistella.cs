@@ -111,36 +111,59 @@ namespace BotigaCistellaObj
 
         //METODES PUBLICS
         /// <summary>
-        /// Afegeix un producte a la taula de productes si es que existeix a botiga i tens suficients diners
+        /// Afegeix un producte a la taula de productes si es que existeix a botiga i tens suficients diners, en cas que ja hagi estat afegit previament, donarem l'opcio que pugui afegir una quantitat desitjada
         /// </summary>
         /// <param name="producte">Producte que volem comprar</param>
         public void ComprarProducte(Producte producte)
         {
-            if (botiga.BuscarProducte(producte) && !ExisteixProducte(producte) && botiga[producte.Nom].Quantitat >= producte.Quantitat)
+            if (botiga.BuscarProducte(producte) && botiga[producte.Nom].Quantitat >= producte.Quantitat)
             {
-                Console.WriteLine(nElements);
-                if (nElements == this.productes.Length)
+                if (ExisteixProducte(producte))
                 {
-                    Console.WriteLine("La cistella esta plena, quant la vols ampliar?");
-                    int num_ampliar;
-                    while (!int.TryParse(Console.ReadLine(), out num_ampliar) || num_ampliar < 0)
+                    Console.WriteLine($"El producte {producte.Nom} ja estava a la cistella! Quants en vols afegir?");
+                    int resultat;
+                    while (!(Int32.TryParse(Console.ReadLine(), out resultat) && resultat > 0.0))
                     {
-                        Console.WriteLine("Num mal escrit! La cistella esta plena, quant la vols ampliar?");
+                        Console.WriteLine("El producte ja esta a la cistella! Quants vols afegir?");
                     }
-                    Array.Resize(ref this.productes, nElements + num_ampliar);
+                    int i = 0;
+                    while (i < nElements && this.productes[i].Nom != producte.Nom)
+                        i++;
+                    while (diners - botiga[producte.Nom].Preu() * resultat < 0.0)
+                    {
+                        Console.WriteLine($"No et queden diners, quants diners vols afegir? (et falten {Math.Round((botiga[producte.Nom].Preu() * resultat - diners), 2)} euros)");
+                        if (Double.TryParse(Console.ReadLine(), out double result) && result > 0.0)
+                            this.diners += result;
+                    }
+                    this.productes[i].Quantitat += resultat;
+                    this.botiga[producte.Nom].Quantitat -= resultat;
+                    diners -= botiga[producte.Nom].Preu() * resultat;
                 }
-                while (diners - botiga[producte.Nom].Preu() * producte.Quantitat < 0.0)
+                else
                 {
-                    Console.WriteLine($"No et queden diners, quants diners vols afegir? (et falten {Math.Round((botiga[producte.Nom].Preu() * producte.Quantitat - diners),2)} euros)");
-                    if (Double.TryParse(Console.ReadLine(), out double result) && result > 0.0)
-                        this.diners += result;
+                    if (nElements == this.productes.Length)
+                    {
+                        Console.WriteLine("La cistella esta plena, quant la vols ampliar?");
+                        int num_ampliar;
+                        while (!int.TryParse(Console.ReadLine(), out num_ampliar) || num_ampliar < 0)
+                        {
+                            Console.WriteLine("Num mal escrit! La cistella esta plena, quant la vols ampliar?");
+                        }
+                        Array.Resize(ref this.productes, nElements + num_ampliar);
+                    }
+                    while (diners - botiga[producte.Nom].Preu() * producte.Quantitat < 0.0)
+                    {
+                        Console.WriteLine($"No et queden diners, quants diners vols afegir? (et falten {Math.Round((botiga[producte.Nom].Preu() * producte.Quantitat - diners), 2)} euros)");
+                        if (Double.TryParse(Console.ReadLine(), out double result) && result > 0.0)
+                            this.diners += result;
+                    }
+                    int aux = botiga[producte.Nom].Quantitat - producte.Quantitat;
+                    botiga[producte.Nom].Quantitat = aux;
+                    productes[nElements] = new Producte(producte);
+                    diners -= botiga[producte.Nom].Preu() * producte.Quantitat;
+                    nElements++;
                 }
-                int aux = botiga[producte.Nom].Quantitat - producte.Quantitat;
-                //botiga[producte.Nom].Quantitat -= producte.Quantitat;
-                productes[nElements] = new Producte(producte);
-                productes[nElements].Quantitat = aux;
-                diners -= botiga[producte.Nom].Preu() * producte.Quantitat;
-                nElements++;
+                
             }
         }
         /// <summary>
@@ -234,7 +257,7 @@ namespace BotigaCistellaObj
         /// <returns>El nom de la botiga i de tots els productes de la taula productes de la cistella en format string, com si fossin un ticket de la compra</returns>
         public override string ToString()
         {
-            string s = "Comprant a " + botiga.NomBotiga + "\n";
+            string s = "Comprant a " + botiga.NomBotiga + ", et queden " + Math.Round(this.diners,2) + " euros\n";
             for (int i = 0; i < nElements; i++)
             {
                 s += productes[i].ToString() + "\n";

@@ -26,7 +26,7 @@ namespace BotigaCistellaObj
             nom = "";
             preu_sense_iva = 0.0;
             iva = 21;
-            quantitat = 1;
+            quantitat = 0;
         }
 
         /// <summary>
@@ -38,6 +38,7 @@ namespace BotigaCistellaObj
         {
             this.nom = nom;
             this.preu_sense_iva= preu_sense_iva;
+            this.quantitat = 10;
         }
 
         /// <summary>

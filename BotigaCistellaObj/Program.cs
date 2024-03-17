@@ -38,6 +38,7 @@ namespace BotigaCistellaObj
                 }
             }
             // PERSISTÈNCIA DE FITXERS: Quan sortim del menú amb la 'q', guardem les dades de la botiga i cistella al fitxer
+            // IMPORTANT! SI EL PROGRAMA ES TANCA MANUALMENT (AMB LA PESTANYA X) ES CONSIDERARA QUE NO ES VOLEN GUARDAR LES DADES AL FITXER
             StreamWriter sW = new StreamWriter(@".\cistella.txt");
             cistella.WriteLineToFile(sW);
             sW.Close();
