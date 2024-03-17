@@ -73,6 +73,7 @@ namespace BotigaCistellaObj
             {
                 productes[i-2] = new Producte(subs[i]);
             }
+            this.productes = productes;
         }
         // PROPIETATS
         /// <summary>

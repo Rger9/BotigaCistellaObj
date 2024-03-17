@@ -174,8 +174,7 @@ namespace BotigaCistellaObj
         // Mètode PintarOpcio
         static void PintarOpcio(string menu, char i)
         {
-            string menuMat = Menu();
-            PintarMenu(Menu(), i);
+            PintarMenu(menu, i);
             Thread.Sleep(1000);
             Console.Clear();
         }
@@ -267,8 +266,8 @@ namespace BotigaCistellaObj
                         Producte[] items = new Producte[productes.Length];
                         for (int i = 0; i < productes.Length; i++)
                         {
-                            Producte aux = new Producte(productes[i], Convert.ToDouble(preus[i]));
-                            items[i] = aux;
+                            items[i] = new Producte(productes[i], Convert.ToDouble(preus[i]));
+                            items[i].Quantitat = 1;
                         }
                         if (botiga.NElements + items.Length < botiga.Productes.Length)
                         {
@@ -277,6 +276,7 @@ namespace BotigaCistellaObj
                         else
                         {
                             BotigaPlena(botiga);
+                            botiga.AfegirProducte(items);
                         }
                     }
                     break;
