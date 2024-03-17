@@ -192,6 +192,15 @@ namespace BotigaCistellaObj
             }
         }
         /// <summary>
+        /// "Compra" la cistella, buidant tots els productes pero mantenint els diners que ens quedava
+        /// </summary>
+        public void ComprarCistella()
+        {
+            this.data = DateTime.Now;
+            this.productes = new Producte[10];
+            this.nElements = 0;
+        }
+        /// <summary>
         /// Escriu per pantalla el contingut de la cistella
         /// </summary>
         public void Mostra()

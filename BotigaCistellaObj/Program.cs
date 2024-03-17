@@ -71,7 +71,6 @@
                $"║  4 - Ordenar botiga per preu     ║\n" +
                $"║  5 - Ordenar botiga per nom      ║\n" +
                $"║  6 - Mostrar botiga              ║\n" +
-               $"║  7 - BackUp Botiga               ║\n" +
                $"║  q - torna enrere                ║\n" +
                $"╚══════════════════════════════════╝";
 
@@ -90,6 +89,7 @@
                $"║  1 - Comprar producte/s          ║\n" +
                $"║  2 - Ordenar cistella            ║\n" +
                $"║  3 - Mostrar cistella            ║\n" +
+               $"║  4 - Comprar cistella            ║\n" +
                $"║  q - torna enrere                ║\n" +
                $"╚══════════════════════════════════╝";
 
@@ -227,7 +227,7 @@
                     {
                         Console.WriteLine("Escriu els productes que voldràs afegir (ex: pomes, peres, platans, melons)");
                         textProductes = Console.ReadLine();
-                        Console.WriteLine("Escriu els preus respectius dels productes afegits(3, 4, 5,6, 6)");
+                        Console.WriteLine("Escriu els preus respectius dels productes afegits(3.50, 4.20, 5.99, 6, 6.80)");
                         textPreus = Console.ReadLine();
                         productes = textProductes.Split(", ");
                         preus = textPreus.Split(", ");
@@ -289,9 +289,6 @@
                 case '6':
                     // MOSTRAR BOTIGA
                     break;
-                case '7':
-                    // BACKUP BOTIGA
-                    break;
 
             }
         }
@@ -335,6 +332,9 @@
                     break;
                 case '3':
                     // MOSTRAR CISTELLA
+                    break;
+                case '4':
+                    // COMPRAR CISTELLA
                     break;
             }
 
