@@ -64,6 +64,10 @@ namespace BotigaCistellaObj
 
             return menu;
         }
+        /// <summary>
+        /// Crida al menú de l'administrador
+        /// </summary>
+        /// <returns>Un string amb el menú escrit</returns>
         static string MenuAdministrador()
         {
             string menu;
@@ -84,7 +88,10 @@ namespace BotigaCistellaObj
 
             return menu;
         }
-
+        /// <summary>
+        /// Crida al menú del comprador
+        /// </summary>
+        /// <returns>Un string amb el menú escrit</returns>
         static string MenuComprador()
         {
             string menu;
@@ -103,6 +110,10 @@ namespace BotigaCistellaObj
 
             return menu;
         }
+        /// <summary>
+        /// Pinta el menú per dins
+        /// </summary>
+        /// <param name="menu">Un dels tres menús disponibles</param>
         static void PintarMenu(string menu)
         {
             string linea = "", text = menu;
@@ -114,6 +125,11 @@ namespace BotigaCistellaObj
             }
             Centrar(text);
         }
+        /// <summary>
+        /// Pinta el menú per dins i passa el paràmetre i al mètode Centrar
+        /// </summary>
+        /// <param name="menu">Un dels tres menus disponibles</param>
+        /// <param name="i">caràcter amb la opció seleccionada del menu</param>
         static void PintarMenu(string menu, char i)
         {
             string linea = "", text = menu;
@@ -126,7 +142,10 @@ namespace BotigaCistellaObj
             Centrar(text);
         }
 
-        // Mètode Centrar
+        /// <summary>
+        /// Escriu una linia de text del menu centrada.
+        /// </summary>
+        /// <param name="text">Un string amb una linia de text</param>
         static void Centrar(string text)
         {
             Console.BackgroundColor = ConsoleColor.Black;
@@ -136,7 +155,11 @@ namespace BotigaCistellaObj
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine();
         }
-
+        /// <summary>
+        /// Escriu una linia de text del menu centrada. Si es la linia amb la opció seleccionada, l'escriu de color groc.
+        /// </summary>
+        /// <param name="text">Un strign amb una linia de text</param>
+        /// <param name="i">caràcter amb la opcio seleccionada del menú</param>
         static void Centrar(string text, char i)
         {
             Console.BackgroundColor = ConsoleColor.Black;
@@ -158,9 +181,10 @@ namespace BotigaCistellaObj
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine();
         }
-
-
-        // Mètode Pintar
+        /// <summary>
+        /// Mostra per consola una linia de text amb el fons pintat
+        /// </summary>
+        /// <param name="text">String que es vol mostrar per pantalla</param>
         static void Pintar(string text)
         {
             Console.BackgroundColor = ConsoleColor.Black;
@@ -170,26 +194,42 @@ namespace BotigaCistellaObj
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine();
         }
-
-        // Mètode PintarOpcio
+        /// <summary>
+        /// Un cop cliques una opcio del menu, aquest mètode canvia la linia de la opció seleccionada de color durant un segon.
+        /// </summary>
+        /// <param name="menu">Un dels tres menus</param>
+        /// <param name="i">caràcter amb la opcio que es vol pintar</param>
         static void PintarOpcio(string menu, char i)
         {
-            string menuMat = Menu();
-            PintarMenu(Menu(), i);
+            PintarMenu(menu, i);
             Thread.Sleep(1000);
             Console.Clear();
         }
-        // Mètode ValidarOpció
-        static bool ValidarOpcio(char lletra, char lletraInici, char lletraFinal)
+        /// <summary>
+        /// Valida que el caràcter que s'entri sigui una opcio disponible al menu, o sigui 'Q' o 'q'.
+        /// </summary>
+        /// <param name="opcio">Caràcter amb la opcio seleccionada</param>
+        /// <param name="lletraInici">Caràcter amb la opció més petita del menú/param>
+        /// <param name="lletraFinal">Caràcter amb la opció més gran del menú</param>
+        /// <returns></returns>
+        static bool ValidarOpcio(char opcio, char lletraInici, char lletraFinal)
         {
-            return (lletra >= lletraInici && lletra <= lletraFinal || lletra == 'q' || lletra == 'Q');
+            return (opcio >= lletraInici && opcio <= lletraFinal || opcio == 'q' || opcio == 'Q');
         }
+        /// <summary>
+        /// Pausa el programa fins que el faci clic a qualsevol botó
+        /// </summary>
         static void PremPerContinuar()
         {
             Pintar($"\n\n\t-----------------------------------------");
             Console.WriteLine($"\tPrem qualsevol botó per tornar al menú...");
             char continuar = Console.ReadKey().KeyChar;
         }
+        /// <summary>
+        /// Crida al menu de l'administrador i permet seleccionar una nova opció
+        /// </summary>
+        /// <param name="opcio">Caràcter amb la opció a seleccionar</param>
+        /// <param name="botiga">L'objecte del tipus Botiga</param>
         static void OpcionsAdmin(char opcio, Botiga botiga)
         {
             PintarOpcio(Menu(), '1');
@@ -206,6 +246,11 @@ namespace BotigaCistellaObj
                 SeleccionarAdministrador(opcio, botiga);
             }
         }
+        /// <summary>
+        /// Crida al menu del comprador i permet seleccionar una nova opció
+        /// </summary>
+        /// <param name="opcio">Caràcter amb la opció a seleccionar</param>
+        /// <param name="cistella">L'objecte del tipus Cistella</param>
         static void OpcionsComprador(char opcio, Cistella cistella)
         {
             PintarOpcio(Menu(), '2');
@@ -222,6 +267,11 @@ namespace BotigaCistellaObj
                 SeleccionarComprador(opcio, cistella);
             }
         }
+        /// <summary>
+        /// Accedeix a qualsevol de les opcions de l'administrador
+        /// </summary>
+        /// <param name="opcio">Caràcter opció seleccionat</param>
+        /// <param name="botiga">Objecte del tipus Botiga</param>
         static void SeleccionarAdministrador(char opcio, Botiga botiga)
         {
             PintarOpcio(MenuAdministrador(), opcio);
@@ -318,6 +368,10 @@ namespace BotigaCistellaObj
             }
             PremPerContinuar();
         }
+        /// <summary>
+        /// Quan la botiga està plena, pregunta si la vols ampliar
+        /// </summary>
+        /// <param name="botiga">Objecte del tipus botiga</param>
         static void BotigaPlena(Botiga botiga)
         {
             char sn = ' ';
@@ -342,6 +396,11 @@ namespace BotigaCistellaObj
             }
             
         }
+        /// <summary>
+        /// Accecdeix a qualsevol de les opcions del comprador
+        /// </summary>
+        /// <param name="opcio">caràcter opcio seleccionat</param>
+        /// <param name="cistella">Objecte del tipus Cistella</param>
         static void SeleccionarComprador(char opcio, Cistella cistella)
         {
             PintarOpcio(MenuComprador(), opcio);
