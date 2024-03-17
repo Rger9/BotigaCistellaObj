@@ -1,4 +1,6 @@
-﻿namespace BotigaCistellaObj
+﻿using System.Security;
+
+namespace BotigaCistellaObj
 {
     internal class Program
     {
@@ -193,7 +195,7 @@
                     PintarMenu(MenuAdministrador());
                     opcio = Console.ReadKey().KeyChar;
                 }
-                while (!ValidarOpcio(opcio, '1', '7'));
+                while (!ValidarOpcio(opcio, '1', '6'));
                 Console.Clear();
                 SeleccionarAdministrador(opcio, botiga);
             }
@@ -209,7 +211,7 @@
                     PintarMenu(MenuComprador());
                     opcio = Console.ReadKey().KeyChar;
                 }
-                while (!ValidarOpcio(opcio, '1', '3'));
+                while (!ValidarOpcio(opcio, '1', '4'));
                 Console.Clear();
             }
         }
@@ -225,6 +227,7 @@
                     // Preguntem pels productes que volem afegir amb els respectius preus.
                     do
                     {
+                        Pintar("AFEGIR PRODUCTE/S");
                         Console.WriteLine("Escriu els productes que voldràs afegir (ex: pomes, peres, platans, melons)");
                         textProductes = Console.ReadLine();
                         Console.WriteLine("Escriu els preus respectius dels productes afegits(3.50, 4.20, 5.99, 6, 6.80)");
@@ -269,27 +272,42 @@
                             BotigaPlena(botiga);
                         }
                     }
-
-
-
-
                     break;
                 case '2':
                     // AMPLIAR BOTIGA
+                    Pintar("AMPLIAR BOTIGA");
+                    Console.WriteLine("En quants espais vols ampliar la botiga?");
+                    int espais = Convert.ToInt32(Console.ReadLine);
+                    if (espais > 0) botiga.AmpliarBotiga(espais);
+                    else Console.WriteLine("ERROR: Has d'introduïr un numero més gran que 0");
                     break;
                 case '3':
                     // MODIFICAR PREU
+                    Pintar("MODIFICAR PREU");
+                    Console.WriteLine("Quin producte en voldries modificar el preu?");
+                    string producte = Console.ReadLine();
+                    Console.WriteLine("Quin en serà el nou preu?");
+                    double preu = Convert.ToDouble(Console.ReadLine());
+                    if (botiga.ModificarPreu(producte, preu)) Console.WriteLine("Preu del producte canviat exitosament!");
+                    else Console.WriteLine("ERROR: No s'ha trobat el producte a modificar");
                     break;
                 case '4':
                     // ORDENAR BOTIGA PREU
+                    Pintar("BOTIGA ORDENADA PER PREU");
+                    botiga.OrdenarPreu();
+                    botiga.Mostrar();
                     break;
                 case '5':
                     // ORDENAR BOTIGA NOM
+                    Pintar("BOTIGA ORDENADA ALFABÈTICAMENT");
+                    botiga.OrdenarProducte();
+                    botiga.Mostrar();
                     break;
                 case '6':
                     // MOSTRAR BOTIGA
+                    botiga.Mostrar();
                     break;
-
+                    PremPerContinuar();
             }
         }
         static void BotigaPlena(Botiga botiga)
@@ -308,14 +326,11 @@
                 else if (sn == 'n')
                 {
                     Console.WriteLine("Tornant al menu...");
-                    Thread.Sleep(2000);
                 }
                 else
                 {
                     Console.WriteLine("ERROR: Introdueix s o n");
-                    Thread.Sleep(2000);
                 }
-                Console.Clear();
             }
             
         }
